@@ -17,8 +17,42 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, isConfigured } = useAuth();
   const navigate = useNavigate();
+
+  // Show configuration message if Supabase is not set up
+  if (!isConfigured) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <header className="p-4 flex justify-end">
+          <ThemeToggle />
+        </header>
+        <main className="flex-1 flex items-center justify-center px-4 pb-12">
+          <div className="w-full max-w-md animate-fade-in">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl gradient-primary shadow-glow mb-4 animate-float">
+                <Sparkles className="w-8 h-8 text-primary-foreground" />
+              </div>
+              <h1 className="text-3xl font-bold text-foreground">Create & Save</h1>
+              <p className="text-muted-foreground mt-2">Your personal notes, beautifully organized</p>
+            </div>
+            <div className="gradient-card rounded-2xl p-8 shadow-medium border border-border/50">
+              <h2 className="text-xl font-semibold text-foreground mb-4">Setup Required</h2>
+              <p className="text-muted-foreground mb-4">
+                To use this app, please configure your Supabase credentials in <code className="bg-muted px-2 py-1 rounded text-sm">src/lib/supabase.ts</code>
+              </p>
+              <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
+                <li>Create a Supabase project at <a href="https://supabase.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">supabase.com</a></li>
+                <li>Copy your project URL and anon key</li>
+                <li>Replace the placeholder values in supabase.ts</li>
+                <li>Create the notes table using the provided SQL</li>
+              </ol>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   const validateForm = () => {
     try {
