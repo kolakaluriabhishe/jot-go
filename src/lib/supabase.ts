@@ -8,8 +8,8 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 // https://app.supabase.com/project/_/settings/api
 // ===========================================
 
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_URL = "https://psvxecdqnzvowiuzmzhe.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_19V2XQyW6wgg2xOfrdN7ww_3fj1UXh1";
 
 // Check if credentials are configured
 const isConfigured = SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY";
