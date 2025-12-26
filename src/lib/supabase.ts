@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 // ===========================================
 // SUPABASE CONFIGURATION
@@ -11,8 +11,15 @@ import { createClient } from '@supabase/supabase-js';
 const SUPABASE_URL = "YOUR_SUPABASE_URL";
 const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
-// Create Supabase client
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Check if credentials are configured
+const isConfigured = SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY";
+
+// Create Supabase client only if configured, otherwise create a mock
+export const supabase: SupabaseClient = isConfigured 
+  ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null as unknown as SupabaseClient;
+
+export const isSupabaseConfigured = isConfigured;
 
 // ===========================================
 // DATABASE SCHEMA REQUIRED

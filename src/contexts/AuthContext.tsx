@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase, User } from '@/lib/supabase';
+import { supabase, User, isSupabaseConfigured } from '@/lib/supabase';
 import { Session } from '@supabase/supabase-js';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  isConfigured: boolean;
   signUp: (email: string, password: string) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
@@ -19,6 +20,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Skip if Supabase is not configured
+    if (!isSupabaseConfigured) {
+      setLoading(false);
+      return;
+    }
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -83,7 +90,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, isConfigured: isSupabaseConfigured, signUp, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
